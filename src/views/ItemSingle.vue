@@ -7,7 +7,7 @@
     
     <header class="the-title">
       <h1>{{ item.title }}</h1>
-      <time>Created on: {{ new Date(item.date).toLocaleString("en-us", { dateStyle: "long" }) }}
+      <time>Created on: {{ new Date(item.date).toLocaleString("en-us", { dateStyle: "long" }) }}</time>
     </header>
 
     <main v-html="item.content"></main>

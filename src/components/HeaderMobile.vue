@@ -2,7 +2,7 @@
 <header class="header header-mobile">
   <div class="header__inner">
     <router-link class="logo" :to="{name: 'Home'}">
-      <img :src="require('../assets/logo.png')" alt="">
+      <img :src="require('../images/logo.png')" alt="">
     </router-link>
 
     <a @click.prevent="toggle" href="#menu">Menu</a>

@@ -2,7 +2,7 @@
 <header class="header" role="navigation">
   <div class="header__bottom">
     <router-link class="logo" :to="{name: 'Home'}">
-      <img :src="require('../assets/logo.png')" alt="">
+      <img :src="require('../images/logo.png')" alt="">
     </router-link>
 
     <HeaderMenu />
@@ -46,5 +46,52 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+@import '../sass/vars'
+
+.header
+  position: relative
+  z-index: 100
+  background-color: var(--siteBgColor)
+  padding-top: var(--headerPadding, 0.5rem)
+  padding-bottom: var(--headerPadding, 0.5rem)
+
+  transition: var(--gTransition)
+
+.header__bottom
+  --headerPadding: 0
+
+  display: flex
+  position: sticky
+  top: 0
+
+  @media ($below-nav)
+    display: none
+
+
+.logo
+  display: flex
+  flex-direction: column
+
+  img
+    width: auto
+    max-height: var(--logoMaxHeight, 40px)
+    transition: var(--gTransition)
+    will-change: transform
+
+  &:hover
+    img
+      opacity: .75
+      transform: translateY(-2px)
+
+  // tagline
+  span
+    font-size: var(--smallFontSize)
+    color: var(--text)
+
+  .footer &
+    justify-content: flex-start
+    width: 100%
+
+  
 
 </style>

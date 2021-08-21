@@ -2,18 +2,18 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import firebase from 'firebase/app';
 
-import Home from "../views/Home.vue";
+import Home from "./views/Home.vue";
 
-import UserLogin from "../views/UserLogin";
-import UserRegister from "../views/UserRegister";
-import UserForgotPassword from "../views/UserForgotPassword";
-import UserProfile from "../views/UserProfile";
+import UserLogin from "./views/UserLogin";
+import UserRegister from "./views/UserRegister";
+import UserForgotPassword from "./views/UserForgotPassword";
+import UserProfile from "./views/UserProfile";
 
 // Use Search-Replace to change "Item" to the data type you need
-import ItemArchive from "../views/ItemArchive.vue";
-import ItemSingle from "../views/ItemSingle";
-import ItemCreate from "../views/ItemCreate";
-import ItemEdit from "../views/ItemEdit";
+import ItemArchive from "./views/ItemArchive.vue";
+import ItemSingle from "./views/ItemSingle";
+import ItemCreate from "./views/ItemCreate";
+import ItemEdit from "./views/ItemEdit";
 
 
 Vue.use(VueRouter);
@@ -63,7 +63,7 @@ const routes = [
   {
     path: '/items',
     name: 'ItemArchive',
-    component: Items,
+    component: ItemArchive,
     meta: {
       title: 'All Items'
     }
@@ -71,7 +71,7 @@ const routes = [
   {
     path: '/items/:id',
     name: 'ItemSingle',
-    component: Item,
+    component: ItemSingle,
     meta: {
       title: 'Item'
     }

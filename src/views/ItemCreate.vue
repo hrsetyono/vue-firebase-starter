@@ -16,7 +16,7 @@ export default {
   data() { return {
   }},
   methods: {
-    onSubmit( payload ) {
+    async onSubmit( payload ) {
       let itemID = await this.$store.dispatch( 'createItem', payload );
       this.$router.push({ name: 'ItemSingle', params:{ id: itemID } }); 
     },

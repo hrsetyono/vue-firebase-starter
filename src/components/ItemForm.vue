@@ -105,7 +105,7 @@ export default {
         payload = {
           title: this.title,
           content: this.content,
-          imageURL: imageURL,
+          imageURL: this.imageURL,
           imageName: this.imageName,
           author: this.$store.state.profile.id,
           date: timestamp,

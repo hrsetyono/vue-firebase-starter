@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import db from './firebase';
+import db from '../firebase';
 import Modal from '../components/Modal';
 import Loading from '../components/Loading';
 
@@ -56,10 +56,10 @@ export default {
     async updateProfile() {
       this.isLoading = true;
 
-      const database = await db.collection( 'users' ).doc( state.userID );
+      const database = await db.collection( 'users' ).doc( this.$store.state.userID );
       let payload = {
-        firstName: state.userFirstName,
-        lastName: state.userLastName,
+        firstName: this.$store.state.userFirstName,
+        lastName: this.$store.state.userLastName,
       };
       await database.update( payload );
 
