@@ -1,6 +1,6 @@
 <template>
 <div class="user-form__wrapper">
-  <form class="user-form" @submit.prevent="updateProfile">
+  <form class="user-form" @submit.prevent="updateProfile" v-if="$store.state.userEmail">
     <h2>Account Settings</h2>
     <label>
       <span>First Name</span>
@@ -34,7 +34,7 @@ import Modal from '../components/Modal';
 import Loading from '../components/Loading';
 
 export default {
-  name: 'profile',
+  name: 'userProfile',
   components: {
     Modal,
     Loading
@@ -44,18 +44,6 @@ export default {
     isModalOpen: false,
     modalMessage: 'Changes were saved',
   }},
-  created() {
-    // populate the field, but wait for auth data
-    // firebase.auth().onAuthStateChanged( user => {
-    //   this.isLoading = false;
-
-    //   if( user ) {
-    //     this.email = this.$store.state.userEmail;
-    //     this.firstName = this.$store.state.userFirstName;
-    //     this.lastName = this.$store.state.userLastName;
-    //   }
-    // });
-  },
   methods: {
     /**
      * Change User data in Firebase and update the $state
@@ -79,20 +67,21 @@ export default {
     closeModal() {
       this.isModalOpen = false;
     },
-
-    commit( key, value ) {
-      this.$store.commit( 'updateProfile', { key, value } );
-    },
   },
   
   computed: {
-    email() { return this.$store.state.userEmail; },
+    email() {
+      return this.$store.state.userEmail;
+    },
     firstName: {
       get() {
         return this.$store.state.userFirstName;
       },
       set( value ) {
-        this.commit( 'userFirstName', value );
+        this.$store.commit( 'updateProfile', {
+          key: 'userFirstName',
+          value: value
+        } );
       }
     },
     lastName: {
@@ -100,7 +89,10 @@ export default {
         return this.$store.state.userLastName;
       },
       set( value ) {
-        this.commit( 'userLastName', value );
+        this.$store.commit( 'updateProfile', {
+          key: 'userLastName',
+          value: value
+        } );
       }
     }
   },

@@ -1,7 +1,7 @@
 <template>
 <div class="item-form__wrapper">
   <h1>Edit Item</h1>
-  <ItemForm :item="item" submit-text="Edit Item" @submit="onSubmit" />
+  <ItemForm :item="item" v-if="item" submit-text="Edit Item" @submit="onSubmit" @delete="onDelete" />
 </div>
 </template>
 
@@ -14,7 +14,7 @@ export default {
     ItemForm
   },
   data() { return {
-    item: [],
+    item: null,
   }},
   /**
    * Get the Item data to pre-populate the field
@@ -23,10 +23,21 @@ export default {
     this.item = await this.$store.dispatch( 'getItem', this.$route.params.id );
   },
   methods: {
+    /**
+     * After submitted
+     */
     async onSubmit( payload ) {
       await this.$store.dispatch( 'updateItem', payload );
-      this.$router.push({ name: 'ItemSingle', params:{ id: payload.id } }); 
+      this.$router.push({ name: 'ItemSingle', params:{ id: payload.id } });
     },
+
+    /**
+     * After deleted
+     */
+    async onDelete() {
+      await this.$store.dispatch( 'deleteItem', this.item.id );
+      this.$router.push({ name: 'ItemArchive' });
+    }
   }
 }
 </script>

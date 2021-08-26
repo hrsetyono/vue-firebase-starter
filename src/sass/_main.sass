@@ -182,10 +182,19 @@ select
 
 ///// BUTTON
 
+.buttons
+  display: flex
+  flex-wrap: wrap
+  width: 100%
+
+  > * + *
+    margin-left: 0.5rem
+
 .button,
 [type="submit"],
 [type="reset"]
-  display: inline-block
+  display: flex
+  align-items: center
   cursor: pointer
   overflow: hidden
   
@@ -208,8 +217,9 @@ select
   // Image or SVG inside a button
   img,
   svg
-    margin-right: 0.5em
-    max-height: 1.25em
+    margin-right: 0.5rem
+    width: 1.25rem
+    max-height: 1.25rem
     
   img:only-child,
   svg:only-child

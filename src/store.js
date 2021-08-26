@@ -92,9 +92,9 @@ export default new Vuex.Store({
     /**
      * Delete existing item 
      */
-    async deleteItem(context, payload) {
-      const getPost = await db.collection( 'items' ).doc( payload );
-      await getPost.delete();
+    async deleteItem( context, id ) {
+      const item = await db.collection( 'items' ).doc( id );
+      await item.delete();
     },
 
     /**

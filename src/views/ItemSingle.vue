@@ -55,13 +55,14 @@ export default {
   max-width: var(--blogWidth)
   margin: 0 auto
 
-  img
-    width: 100%
-    height: 300px
-    object-fit: cover
-    object-position: center center
-
 .the-title
   margin: var(--blockSpacing) auto
   max-width: var(--blogWidth)
+
+.single-item__related
+  max-width: var(--siteWidth)
+  margin: var(--groupSpacing) auto 0
+
+  h2
+    margin-bottom: var(--blockSpacing)
 </style>
