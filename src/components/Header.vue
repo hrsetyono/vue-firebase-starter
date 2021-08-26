@@ -51,18 +51,19 @@ export default {
 .header
   position: relative
   z-index: 100
-  background-color: var(--siteBgColor)
-  padding-top: var(--headerPadding, 0.5rem)
-  padding-bottom: var(--headerPadding, 0.5rem)
-
+  background-color: var(--text)
   transition: var(--gTransition)
 
 .header__bottom
   --headerPadding: 0
 
   display: flex
+  align-items: center
   position: sticky
   top: 0
+  max-width: var(--siteWidth)
+  margin: 0 auto
+
 
   @media ($below-nav)
     display: none

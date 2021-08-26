@@ -1,6 +1,6 @@
 <template>
 <div class="user-form__wrapper">
-  <form class="user-form">
+  <form class="user-form" @submit.prevent="requestPasswordReset">
     <h2>Reset Password</h2>
     <label>
       <span>Email</span>
@@ -8,11 +8,11 @@
     </label>
 
     <div class="user-form__submit">
-      <button @click.prevent="requestPasswordReset">Request Password Reset</button>
+      <button type="submit">Request Password Reset</button>
     </div>
   </form>
-  <p>
-    <router-link :to="{name: 'Home'}">Back to Login</router-link>
+  <p class="form-foot-note">
+    <router-link :to="{name: 'UserLogin'}">Back to Login</router-link>
   </p>
   <Modal v-if="isModalOpen" :message="modalMessage" v-on:closed="closeModal" />
   <Loading v-if="isLoading" />

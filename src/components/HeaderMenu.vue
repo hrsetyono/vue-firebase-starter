@@ -4,15 +4,15 @@
     <router-link :to="{name: 'Home'}">Home</router-link>
   </li>
   <li class="menu-item">
-    <router-link :to="{name: 'Items'}">Items</router-link>
+    <router-link :to="{name: 'ItemArchive'}">Items</router-link>
   </li>
   <li class="menu-item">
     <router-link :to="{name: 'ItemCreate'}">Create Item</router-link>
   </li>
-  <li class="menu-item" v-if="!$store.state.isUserLoggedIn">
+  <li class="menu-item" v-if="!$store.state.isLoggedIn">
     <router-link :to="{name: 'UserLogin'}">Login</router-link>
   </li>
-  <li class="menu-item menu-item-has-children" v-if="$store.state.isUserLoggedIn">
+  <li class="menu-item menu-item-has-children" v-if="$store.state.isLoggedIn">
     <a href="#">My Account</a>
 
     <ul class="sub-menu">
@@ -46,38 +46,22 @@ export default {
 @import '../sass/vars'
 
 .menu
-  --navPadding: 2rem 0.75rem
+  --navPadding: 1.5rem 0.75rem
   
   display: flex
   flex-wrap: wrap
+  margin-left: auto
   list-style-type: none
+  padding: 0
+  color: var(--textInvert)
   transition: var(--gTransition)
 
 .menu-item
   position: relative
 
-  > a::before
-    content: ""
-    display: block
-    visibility: hidden
-    opacity: 0
-
-    position: absolute
-    bottom: 0
-    left: 10px
-    right: 10px
-    height: 4px
-    background-color: var(--color1)
-
-    transition: var(--gTransition)
-  
-    .footer &
-      display: none
-
-  > a:hover::before
-    visibility: visible
-    opacity: 1
-
+  .footer &
+    --navPadding: 0.5rem
+    width: 50%
 
 .menu-item > a
   display: flex
@@ -98,6 +82,24 @@ export default {
   .offcanvas &
     letter-spacing: 0.025em
 
+  &::before
+    content: ""
+    display: block
+    visibility: hidden
+    opacity: 0
+
+    position: absolute
+    bottom: 0
+    left: 10px
+    right: 10px
+    height: 4px
+    background-color: var(--color1)
+
+    transition: var(--gTransition)
+  
+    .footer &
+      display: none
+
 
 .menu-item > a:hover
   .footer &
@@ -107,6 +109,10 @@ export default {
   .offcanvas &
     background-color: var(--navBgHover, rgba(var(--color1RGB), .3))
     opacity: .75
+
+  &::before
+    visibility: visible
+    opacity: 1
 
 
 // active state

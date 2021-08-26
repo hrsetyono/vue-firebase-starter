@@ -48,8 +48,7 @@ const routes = [
     name: 'UserForgotPassword',
     component: UserForgotPassword,
     meta: {
-      title: 'Forgot Password',
-      authRequired: true,
+      title: 'Forgot Password'
     }
   },
   {
@@ -57,7 +56,8 @@ const routes = [
     name: 'UserProfile',
     component: UserProfile,
     meta: {
-      title: 'Profile'
+      title: 'Profile',
+      authRequired: true
     }
   },
   {
@@ -113,7 +113,10 @@ router.beforeEach( (to, from, next) => {
 router.beforeEach( (to, from, next) => {
   if( to.meta.authRequired ) {
     if( !firebase.auth().currentUser ) {
-      next({ name: 'Home' });
+      next({
+        name: 'UserLogin',
+        query: { redirectTo: to.name }
+      });
     }
   }
 

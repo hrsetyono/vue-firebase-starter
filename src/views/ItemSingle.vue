@@ -33,9 +33,9 @@ import Items from '../components/Items';
 
 export default {
   name: 'itemSingle',
-  components: [
+  components: {
     Items,
-  ],
+  },
   data() { return {
     relatedItems: [],
     item: {}
@@ -51,4 +51,17 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.featured-image
+  max-width: var(--blogWidth)
+  margin: 0 auto
+
+  img
+    width: 100%
+    height: 300px
+    object-fit: cover
+    object-position: center center
+
+.the-title
+  margin: var(--blockSpacing) auto
+  max-width: var(--blogWidth)
 </style>

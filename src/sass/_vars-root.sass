@@ -54,11 +54,6 @@
   --codeFontFamily : SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace
   --codeFontSize   : var(--smallFontSize)
 
-  // LINK -----
-  --linkColor      : inherit
-  --linkColorHover : var(--main)
-
-
   // GRID -----
   --siteWidth : #{ $size-large }
   --blogWidth : 650px
@@ -109,17 +104,3 @@ body.admin-bar
 
   @media ($below-adminbar)
     --adminBarHeight : 0px
-
-
-///// GUTENBERG COLORS
-
-@each $c in $colors
-  $var: map-get($c, 'var')
-  $slug: map-get($c, 'slug')
-
-  .has-#{ $slug }-background-color
-    --bgColor: var(#{ $var })
-    --bgColorRGB: var(#{ $var }RGB)
-  .has-#{ $slug }-color
-    --textColor: var(#{ $var })
-    --textColorRGB: var(#{ $var }RGB)

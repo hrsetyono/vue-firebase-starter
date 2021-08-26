@@ -24,8 +24,13 @@
 </template>
 
 <script>
+import HeaderMenu from './HeaderMenu';
+
 export default {
   name: 'headerMobile',
+  components: {
+    HeaderMenu
+  },
   data() { return {
     isOpen: false,
   } },

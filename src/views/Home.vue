@@ -14,11 +14,11 @@
   <h3 class="alignwide">Latest Items</h3>
   <Items :items="items" />
 
-  <section class="group / alignfull has-background-color has-main-background-color has-text-color has-text-invert-color">
+  <section class="group / alignfull has-background-color has-color-1-background-color has-text-color has-text-invert-color">
     <div class="group__inner">
       <h3>Interested to Join Us?</h3> 
       <div class="buttons">
-        <router-link class="button" :to="{name: 'Register'}">
+        <router-link class="button" :to="{name: 'UserRegister'}">
           Register Now
         </router-link>
       </div>

@@ -1,6 +1,6 @@
 <template>
 <div class="user-form__wrapper">
-  <form class="user-form">
+  <form class="user-form" @submit.prevent="updateProfile">
     <h2>Account Settings</h2>
     <label>
       <span>First Name</span>
@@ -17,7 +17,7 @@
     </label>
 
     <div class="user-form__submit">
-      <button @click="updateProfile">Update Profile</button>
+      <button type="submit">Update Profile</button>
     </div>
   </form>
 
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+// import firebase from 'firebase/app';
+// import 'firebase/auth';
 import db from '../firebase';
 import Modal from '../components/Modal';
 import Loading from '../components/Loading';
@@ -38,16 +40,21 @@ export default {
     Loading
   },
   data() { return {
-    email: this.$store.state.userEmail,
-    firstName: this.$store.state.userFirstName,
-    lastName: this.$store.state.userLastName,
-
     isLoading: false,
     isModalOpen: false,
     modalMessage: 'Changes were saved',
   }},
   created() {
+    // populate the field, but wait for auth data
+    // firebase.auth().onAuthStateChanged( user => {
+    //   this.isLoading = false;
 
+    //   if( user ) {
+    //     this.email = this.$store.state.userEmail;
+    //     this.firstName = this.$store.state.userFirstName;
+    //     this.lastName = this.$store.state.userLastName;
+    //   }
+    // });
   },
   methods: {
     /**
@@ -58,12 +65,11 @@ export default {
 
       const database = await db.collection( 'users' ).doc( this.$store.state.userID );
       let payload = {
-        firstName: this.$store.state.userFirstName,
-        lastName: this.$store.state.userLastName,
+        firstName: this.firstName,
+        lastName: this.lastName,
       };
       await database.update( payload );
 
-      await this.$store.commit( 'updateUserProfile', payload );
       this.isLoading = false;
       this.isModalOpen = true;
     },
@@ -73,6 +79,30 @@ export default {
     closeModal() {
       this.isModalOpen = false;
     },
+
+    commit( key, value ) {
+      this.$store.commit( 'updateProfile', { key, value } );
+    },
+  },
+  
+  computed: {
+    email() { return this.$store.state.userEmail; },
+    firstName: {
+      get() {
+        return this.$store.state.userFirstName;
+      },
+      set( value ) {
+        this.commit( 'userFirstName', value );
+      }
+    },
+    lastName: {
+      get() {
+        return this.$store.state.userLastName;
+      },
+      set( value ) {
+        this.commit( 'userLastName', value );
+      }
+    }
   },
 }
 </script>

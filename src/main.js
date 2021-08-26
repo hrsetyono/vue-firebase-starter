@@ -9,7 +9,6 @@ import 'firebase/auth';
 
 
 Vue.use(Vue2Editor);
-
 Vue.config.productionTip = false;
 
 let app;
@@ -19,6 +18,6 @@ firebase.auth().onAuthStateChanged( () => {
       router,
       store,
       render: (h) => h(App),
-    }).$mount("#app");    
+    }).$mount("#app"); 
   }
 } );

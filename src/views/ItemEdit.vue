@@ -32,4 +32,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.item-form__wrapper
+  max-width: var(--siteWidth)
+  margin: var(--blockSpacing) auto
 </style>

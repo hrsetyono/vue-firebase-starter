@@ -1,6 +1,6 @@
 <template>
 <div class="user-form__wrapper">
-  <form class="user-form">
+  <form class="user-form" @submit.prevent="register">
     <h2>Register</h2>
     <label>
       <span>First Name</span>
@@ -28,12 +28,12 @@
     </div>
 
     <div class="user-form__submit">
-      <button @click.prevent="register">Register</button>
+      <button type="submit">Register</button>
     </div>
 
   </form>
-  <p>
-    Already have an account? <router-link :to="{name: 'Login'}">Login Now</router-link>
+  <p class="form-foot-note">
+    Already have an account? <router-link :to="{name: 'UserLogin'}">Login Now</router-link>
   </p>
   <Loading v-if="isLoading" />
 </div>
@@ -90,7 +90,10 @@ export default {
         });
 
         // redirect back to Login
-        this.$router.push({ name: 'Login' });
+        this.$router.push({
+          name: 'UserLogin',
+          query: { afterRegister: true }
+        });
       }
       catch( error ) {
         this.isLoading = false;

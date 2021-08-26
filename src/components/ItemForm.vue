@@ -1,26 +1,28 @@
 <template>
-<form class="item-form" action="">
-  <label>
+<form class="item-form" action="" @submit.prevent="saveItem">
+  <label class="item-form__field is-title-field">
     <span>Title</span>
     <input type="text" placeholder="Enter Item's name" v-model.trim="title">
   </label>
-  <label>
+  
+  <label class="item-form__field is-image-field">
+    <span>Thumbnail Image</span>
+    <input type="file" @change="imageChange" accept=".png, .jpg, ,jpeg" />
+    <img :src="imageURL" v-if="imageURL">
+  </label>
+
+  <label class="item-form__field">
     <span>Content</span>
     <vue-editor :editorOptions="editorSettings"
       v-model.trim="content" useCustomImageHandler
       @image-added="imageHandler" />
-  </label>
-
-  <label class="item-form__image">
-    <input type="file" @change="imageChange" accept=".png, .jpg, ,jpeg" />
-    <img :src="imageURL" v-if="imageURL">
   </label>
   
   <div class="item-form__error" v-show="errorMessage">
     {{ errorMessage }}
   </div>
   <div class="item-form__submit">
-    <button @click="saveItem">{{ submitText }}</button>
+    <button type="submit">{{ submitText }}</button>
   </div>
 
   <Loading v-show="isLoading" />
@@ -29,6 +31,7 @@
 
 <script>
 import Quill from 'quill';
+import Loading from './Loading';
 
 window.Quill = Quill;
 const ImageResize = require( 'quill-image-resize-module' ).default;
@@ -37,6 +40,9 @@ Quill.register( 'modules/imageResize', ImageResize );
 export default {
   name: 'itemForm',
   props: [ 'item', 'submitText' ],
+  components: {
+    Loading
+  },
   data() { return {
     title: '',
     content: '',  
@@ -107,7 +113,7 @@ export default {
           content: this.content,
           imageURL: this.imageURL,
           imageName: this.imageName,
-          author: this.$store.state.profile.id,
+          author: this.$store.state.userID,
           date: timestamp,
         };
       }
@@ -123,6 +129,7 @@ export default {
       this.imageName = this.imageFile.name;
       this.imageURL = URL.createObjectURL( this.imageFile ); // create Blob that can be used as 'src'
     },
+
     /**
      * Listener for inserting Image into Editor
      */
@@ -139,6 +146,47 @@ export default {
 }
 </script>
 
-<style>
+<style lang="sass" scoped>
+.item-form
+  display: flex
+  flex-wrap: wrap
+  row-gap: var(--blockSpacing)
+  column-gap: var(--blockSpacing)
+
+.item-form__field
+  width: 100%
+
+  span
+    display: block
+    margin-bottom: 0.25rem
+
+.is-title-field
+  flex: 1
+
+.is-image-field
+  position: relative
+  cursor: pointer
+  flex: 1
+
+  input
+    cursor: pointer
+  
+  img
+    position: absolute
+    top: 0
+    right: 0
+    max-width: 8rem
+    max-height: 8rem
+    border: 2px solid var(--textInvert)
+    box-shadow: var(--shadow0)
+
+  &:hover
+    background-color: rgba(black, .05)
+
+
+.item-form__error
+  width: 100%
+  color: red
+
 
 </style>

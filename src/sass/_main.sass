@@ -1,0 +1,247 @@
+///// COLOR
+
+@each $c in $colors
+  $var: map-get($c, 'var')
+  $slug: map-get($c, 'slug')
+
+  .has-#{ $slug }-background-color
+    --bgColor: var(#{ $var })
+    --bgColorRGB: var(#{ $var }RGB)
+  .has-#{ $slug }-color
+    --textColor: var(#{ $var })
+    --textColorRGB: var(#{ $var }RGB)
+
+.has-background-color
+  background-color: var(--bgColor, transparent)
+
+.has-text-color,
+.has-inline-color
+  color: var(--textColor, inherit)
+
+ 
+///// MAIN WRAPPER
+main
+  letter-spacing: calc(0.01 * var(--fontSize))
+  overflow-wrap: break-word
+
+  h1, h2, h3, h4, h5, h6
+    clear: both
+    color: var(--textColor)
+  
+  ul, ol
+    padding-left: 1.25rem
+
+  ul.has-background,
+  ol.has-background
+    padding: 1rem 1.5rem
+    padding-left: 2.5rem
+  
+  img
+    border-radius: var(--gRadius)
+  
+  a
+    text-decoration: underline
+  a:hover
+    color: var(--linkColorHover, var(--color1))
+
+
+main,
+.group__inner
+  > *
+    margin: 0 auto
+    max-width: var(--blogWidth)
+
+// Add rim to the side
+main,
+.group__inner,
+.cover__inner
+  @media ($below-l)
+    padding-right: var(--gridRim)
+    padding-left: var(--gridRim)
+
+// spacing between element
+main,
+.group__inner,
+.cover__inner,
+.media-text__content,
+.column
+  > * + *
+    margin-top: var(--blockSpacing)
+
+
+///// ALIGNMENT
+
+.alignleft,
+.has-text-align-left
+  text-align: left
+.alignright,
+.has-text-align-right
+  text-align: right
+.aligncenter,
+.has-text-align-center
+  text-align: center
+
+.alignwide
+  max-width: var(--siteWidth)
+  
+  @media ($below-l)
+    max-width: 100%
+
+
+.alignfull
+  max-width: none
+  margin-top: var(--groupSpacing)
+
+  @media ($below-l)
+    margin-right: calc(-1 * var(--gridRim))
+    margin-left: calc(-1 * var(--gridRim))
+
+  &:first-child
+    margin-top: 0
+
+  + *
+    margin-top: var(--groupSpacing)
+
+  + .alignfull
+    margin-top: 0
+
+  &:last-child
+    margin-bottom: 0
+
+.is-vertically-aligned-top
+  align-items: flex-start
+  align-self: flex-start
+
+.is-vertically-aligned-center
+  align-items: center
+  align-self: center
+
+.is-vertically-aligned-bottom
+  align-items: flex-end
+  align-self: flex-end
+
+///// INPUT
+
+[type="text"],
+[type="number"],
+[type="tel"],
+[type="password"],
+[type="email"],
+[type="search"],
+[type="url"],
+[type="date"],
+[type="time"],
+textarea,
+select
+  display: block
+  width: 100%
+  padding: 0.5rem
+  border: 2px solid rgba(black, .1)
+  border-radius: var(--gRadius)
+  background-color: var(--inputBg, var(--textInvert))
+
+  line-height: normal
+  color: var(--inputColor, var(--text))
+  transition: var(--gTransition)
+  
+  &:focus
+    background-color: var(--inputBgFocus, var(--textInvert))
+    border-color: var(--color1)
+    box-shadow: 0 0 0 2px rgba(--color1, .3)
+
+  &[disabled]
+    background-color: rgba(black, .1)
+
+select
+  border-width: 2px 2px 3px
+
+
+[type="radio"],
+[type="checkbox"]
+  cursor: pointer
+  border: 1px solid rgba(black, .25)
+  width: 1rem
+  height: 1rem
+
+  vertical-align: bottom
+  transition: var(--gTransition)
+  -webkit-appearance: none
+  appearance: none
+  
+  &:hover
+    border-color: var(--color1)
+  &:checked
+    border-color: var(--color1)
+    box-shadow: inset 0 0 0 4.5px var(--color1)
+
+[type="checkbox"]
+  border-radius: var(--gRadius)
+[type="radio"]
+  border-radius: 50%
+
+
+///// BUTTON
+
+.button,
+[type="submit"],
+[type="reset"]
+  display: inline-block
+  cursor: pointer
+  overflow: hidden
+  
+  padding: 0.75em 1em
+  background-color: var(--bgColor, var(--color1))
+  border: 2px solid transparent
+  border-radius: 24px
+
+  text-decoration: none
+  text-transform: uppercase
+  letter-spacing: 0.025em
+  font-weight: var(--hFontWeight)
+  color: var(--textColor, var(--textInvert))
+  vertical-align: top
+  line-height: 1
+  
+  transition: var(--gTransition)
+  will-change: transform, opacity
+
+  // Image or SVG inside a button
+  img,
+  svg
+    margin-right: 0.5em
+    max-height: 1.25em
+    
+  img:only-child,
+  svg:only-child
+    margin-left: 0
+    margin-right: 0
+
+  svg
+    height: 1em
+
+  path,
+  circle,
+  rect
+    fill: currentColor
+
+  &:hover
+    opacity: .9
+    color: var(--textColor, var(--textInvert))
+    transform: translateY(-2px)
+    box-shadow: var(--shadow1)
+
+  &:active
+    transition: none
+    transform: none
+    box-shadow: var(--shadow0)
+
+  &[disabled],
+  &.disabled
+    cursor: not-allowed
+    opacity: .5
+
+
+///// GROUP
+
+.group
+  padding: var(--blockSpacing)

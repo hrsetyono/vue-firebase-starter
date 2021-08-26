@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import "firebase/storage";
 import db from './firebase';
 
 Vue.use(Vuex)
@@ -28,10 +29,12 @@ export default new Vuex.Store({
       state.userLastName = doc.data().lastName;
     },
 
-    updateUserProfile( state, payload ) {
-      state.userFirstName = payload.firstName;
-      state.userLastName = payload.lastName;
-    }
+    /**
+     * Update stored profile. payload needs to have `key` and `value`.
+     */
+    updateProfile( state, payload ) {
+      state[payload.key] = payload.value;
+    },
   },
   actions: {
     /**
@@ -40,6 +43,7 @@ export default new Vuex.Store({
     async getCurrentUser( {commit} ) {
       const database = await db.collection( 'users' ).doc( firebase.auth().currentUser.uid );
       const dbResult = await database.get();
+      
       commit( 'setUserProfile', dbResult );
     },
 
@@ -73,7 +77,7 @@ export default new Vuex.Store({
     async createItem( context, payload ) {
       const database = await db.collection( 'items' ).doc();
       payload.id = database.id;
-      await database.update( payload );
+      await database.set( payload );
       return payload.id;
     },
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="main-container">
+  <div id="app">
     <Header v-show="!isMobile" />
     <HeaderMobile v-show="isMobile" />
     <router-view />
@@ -59,7 +59,7 @@ export default {
      * Check current route and do something with it
      */
     checkRoute() {
-      console.log( this.$route.name );
+      // console.log( this.$route.name );
     }
   },
   watch: {
@@ -75,4 +75,6 @@ export default {
 
 @import "./sass/vars"
 @import "./sass/vars-root"
+@import "./sass/normalize"
+@import "./sass/main"
 </style>
