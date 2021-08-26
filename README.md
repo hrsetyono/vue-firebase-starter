@@ -4,8 +4,9 @@ This is a template for starting a project with Firebase as backend and Vue as fr
 
 Contains:
 
-- Account pages such as Login, Register, Forgot Password, and Edit Profile.
-- CRUD pages for 1 collection (Create, Read, Update, Delete).
+- **ACCOUNT pages**: Login, Register, Forgot password, Change profile.
+- **CRUD pages**: Create, Read, Update, Delete a blog post.
+- Basic styling with Normalize and CSS Variables.
 
 Based on [Firebase-Vue tutorial](https://www.youtube.com/watch?v=ISv22NNL-aE) by Traversy Media.
 
@@ -36,7 +37,7 @@ var firebaseConfig = {
 Run this command to initialize Localhost server:
 
 ```
-npm run localhost
+npm run dev
 ```
 
 Before launching, minify the assets by running this command:
