@@ -1,121 +1,149 @@
 <template>
-<form class="item-form" action="" @submit.prevent="saveItem">
-  <label class="item-form__field is-title-field">
-    <span>Title</span>
-    <input type="text" placeholder="Enter Item's name" v-model.trim="title">
-  </label>
-  
-  <label class="item-form__field is-image-field">
-    <span>Thumbnail Image</span>
-    <input type="file" @change="imageChange" accept=".png, .jpg, ,jpeg" />
-    <img :src="imageURL" v-if="imageURL">
-  </label>
+  <form
+    class="item-form"
+    action=""
+    @submit.prevent="saveItem"
+  >
+    <label class="item-form__field is-title-field">
+      <span>Title</span>
+      <input
+        v-model.trim="title"
+        type="text"
+        placeholder="Enter Item's name"
+      >
+    </label>
 
-  <label class="item-form__field">
-    <span>Content</span>
-    <textarea ref="content" rows="8" v-model.trim="content"></textarea>
-  </label>
-  
-  <div class="item-form__error" v-show="errorMessage">
-    {{ errorMessage }}
-  </div>
-  <div class="buttons">
-    <button type="submit">{{ submitText }}</button>
+    <label class="item-form__field is-image-field">
+      <span>Thumbnail Image</span>
+      <input
+        type="file"
+        accept=".png, .jpg, ,jpeg"
+        @change="imageChange"
+      >
+      <img v-if="imageURL" :src="imageURL">
+    </label>
 
-    <button class="button is-delete-button" v-if="isEditForm" @click.prevent="deleteItem">
-      <svg xmlns="http://www.w3.org/2000/svg" width="45" height="50" viewBox="0 0 448 512"><path d="M268 416h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12zM432 80h-82.41l-34-56.7A48 48 0 0 0 274.41 0H173.59a48 48 0 0 0-41.16 23.3L98.41 80H16A16 16 0 0 0 0 96v16a16 16 0 0 0 16 16h16v336a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128h16a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16zM171.84 50.91A6 6 0 0 1 177 48h94a6 6 0 0 1 5.15 2.91L293.61 80H154.39zM368 464H80V128h288zm-212-48h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12z"/></svg>
-      <span>Delete</span>
-    </button>
-  </div>
+    <label class="item-form__field">
+      <span>Content</span>
+      <textarea
+        ref="content"
+        v-model.trim="content"
+        rows="8"
+      />
+    </label>
 
-  <Loading v-show="isLoading" />
-</form>
+    <div v-show="errorMessage" class="item-form__error">
+      {{ errorMessage }}
+    </div>
+    <div class="buttons">
+      <button type="submit">
+        {{ submitText }}
+      </button>
+      <button
+        v-if="isEditForm"
+        class="button is-delete-button"
+        @click.prevent="deleteItem"
+      >
+        <TrashSVG />
+        <span>Delete</span>
+      </button>
+    </div>
+
+    <Loading v-show="isLoading" />
+  </form>
 </template>
 
 <script>
-import Loading from './Loading';
 import hMarkdownEditor from 'edje-markdown-editor';
+import Loading from './Loading.vue';
+import TrashSVG from '../svg/trash.svg';
 import 'edje-markdown-editor/dist/main.css';
 
 export default {
-  name: 'itemForm',
-  props: [ 'item', 'submitText' ],
+  name: 'ItemForm',
   components: {
-    Loading
+    Loading,
+    TrashSVG,
   },
-  data() { return {
-    title: '',
-    content: '',
-    imageFile: null,
-    imageURL: '',
-    imageName: '',
-
-    isLoading: false,
-    errorMessage: '',
-    editorSettings: {
-      modules: { imageResize: {} }
+  props: {
+    item: {
+      type: Object,
+      default: null,
     },
-  }},
+    submitText: {
+      type: String,
+      default: 'Submit',
+    },
+  },
+  data() {
+    return {
+      title: '',
+      content: '',
+      imageFile: null,
+      imageURL: '',
+      imageName: '',
 
-  mounted() {
-    // Add toolbar to textarea
-    this.$nextTick( () => {
-      hMarkdownEditor( this.$refs.content, { buttons: ['bold', 'italic', 'link', '|', 'bullist', 'numlist', 'image', 'quote'] } );
-    });
-    
-    // Pre-populate field if this is an Edit Form
-    if( this.$props.item ) {
-      this.title = this.$props.item.title;
-      this.content = this.$props.item.content;
-      this.imageURL = this.$props.item.imageURL;
-      this.imageName = this.$props.item.imageName;
-    }
+      isLoading: false,
+      errorMessage: '',
+    };
   },
   computed: {
     isEditForm() {
       return this.$props.item || false;
     },
   },
+  mounted() {
+    // Add toolbar to textarea
+    this.$nextTick(() => {
+      hMarkdownEditor(this.$refs.content);
+    });
+
+    // Pre-populate field if this is an Edit Form
+    if (this.$props.item) {
+      this.title = this.$props.item.title;
+      this.content = this.$props.item.content;
+      this.imageURL = this.$props.item.imageURL;
+      this.imageName = this.$props.item.imageName;
+    }
+  },
   methods: {
     /**
-     * 
+     * Save the item
      */
     async saveItem() {
       this.isLoading = true;
 
       // Error validation
-      if( this.title === '' || this.content === '' ) {
+      if (this.title === '' || this.content === '') {
         this.errorMessage = 'You must fill in Title and Content';
         this.isLoading = false;
         return;
       }
-      if( !this.imageURL ) {
+      if (!this.imageURL) {
         this.errorMessage = 'Please upload Featured Image';
         this.isLoading = false;
         return;
       }
 
       // If has file, it means a new Upload
-      if( this.imageFile ) {
-        this.imageURL = await this.$store.dispatch( 'uploadImage', {
+      if (this.imageFile) {
+        this.imageURL = await this.$store.dispatch('uploadImage', {
           file: this.imageFile,
-          name: this.imageName
-        } );
+          name: this.imageName,
+        });
       }
 
       let payload = {};
 
-      if( this.isEditForm ) {
+      if (this.isEditForm) {
         payload = {
           id: this.$props.item.id,
           title: this.title,
           content: this.content,
           imageURL: this.imageURL,
-          imageName: this.imageName
+          imageName: this.imageName,
         };
-      }
-      // if Create New Form
-      else {
+      } else { // if Create New Form
         const timestamp = Date.now();
         payload = {
           title: this.title,
@@ -127,29 +155,31 @@ export default {
         };
       }
 
-      this.$emit( 'submit', payload );
+      this.$emit('submit', payload);
     },
 
     /**
      * Delete an item
      */
     async deleteItem() {
-      if( window.confirm( 'Are you sure you want to delete this item?' ) ) {
-        await this.$store.dispatch( 'deleteItem', this.$props.item.id );
+      if (window.confirm('Are you sure you want to delete this item?')) {
+        await this.$store.dispatch('deleteItem', this.$props.item.id);
         this.$router.push({ name: 'ItemArchive' });
       }
     },
-    
+
     /**
      * Featured image listener
      */
-    imageChange( e ) {
+    imageChange(e) {
       this.imageFile = e.currentTarget.files[0];
       this.imageName = this.imageFile.name;
-      this.imageURL = URL.createObjectURL( this.imageFile ); // create Blob that can be used as 'src'
+
+      // create Blob that can be used as 'src'
+      this.imageURL = URL.createObjectURL(this.imageFile);
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="sass" scoped>
@@ -176,7 +206,7 @@ export default {
 
   input
     cursor: pointer
-  
+
   img
     position: absolute
     top: 0
@@ -189,15 +219,11 @@ export default {
   &:hover
     background-color: rgba(black, .05)
 
-
 .item-form__error
   width: 100%
   color: red
 
-
 .is-delete-button
   margin-left: auto
   background-color: red
-
-
 </style>

@@ -1,51 +1,65 @@
 <template>
-<div class="user-form__wrapper">
-  <div class="toast" v-if="$route.query.afterRegister">
-    Thank you for registering. You can now login with your account.
+  <div class="user-form__wrapper">
+    <div v-if="$route.query.afterRegister" class="toast">
+      Thank you for registering. You can now login with your account.
+    </div>
+    <form class="user-form" @submit.prevent="login">
+      <h2>Login</h2>
+      <label>
+        <span>Email</span>
+        <input
+          v-model="email"
+          type="email"
+          placeholder="Enter your Email"
+        >
+      </label>
+      <label>
+        <span>Password</span>
+        <input v-model="password" type="password">
+      </label>
+
+      <div v-show="errorMessage" class="user-form__error">
+        {{ errorMessage }}
+      </div>
+
+      <div class="user-form__submit">
+        <button type="submit">
+          Log In
+        </button>
+      </div>
+    </form>
+    <p class="form-foot-note">
+      <router-link :to="{name: 'UserRegister'}">
+        Register Now
+      </router-link>
+      |
+      <router-link :to="{name: 'UserForgotPassword'}">
+        Forgot Password?
+      </router-link>
+    </p>
+    <Loading v-if="isLoading" />
   </div>
-  <form class="user-form" @submit.prevent="login">
-    <h2>Login</h2>
-    <label>
-      <span>Email</span>
-      <input type="email" placeholder="Enter your Email" v-model="email">
-    </label>
-    <label>
-      <span>Password</span>
-      <input type="password" v-model="password">
-    </label>
-
-    <div class="user-form__error" v-show="errorMessage">
-      {{ errorMessage }}
-    </div>
-
-    <div class="user-form__submit">
-      <button type="submit">Log In</button>
-    </div>
-  </form>
-  <p class="form-foot-note">
-    <router-link :to="{name: 'UserRegister'}">Register Now</router-link> | <router-link :to="{name: 'UserForgotPassword'}">Forgot Password?</router-link>
-  </p>
-  <Loading v-if="isLoading" />
-</div>
 </template>
 
 <script>
-import Loading from '../components/Loading';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import Loading from '../components/Loading.vue';
 
 export default {
-  name: 'login',
+  name: 'Login',
   components: {
-    Loading
+    Loading,
   },
-  data() { return {
-    email: '',
-    password: '',
+  data() {
+    return {
+      email: '',
+      password: '',
 
-    errorMessage : '',
-    isLoading: false,
-  } },
+      errorMessage: '',
+      isLoading: false,
+    };
+  },
   methods: {
     /**
      * Authorize user in Firebase. This will trigger the AuthStateChanged listener in App.vue
@@ -55,24 +69,22 @@ export default {
       this.isLoading = true;
 
       try {
-        await firebase.auth().signInWithEmailAndPassword( this.email, this.password );
+        await firebase.auth().signInWithEmailAndPassword(this.email, this.password);
         this.isLoading = false;
 
         // if redirected to login from secured page, redirect back after logging in
-        if( this.$route.query.redirectTo ) {
+        if (this.$route.query.redirectTo) {
           this.$router.push({ name: this.$route.query.redirectTo });
         } else {
           this.$router.push({ name: 'Home' });
         }
-        
-      }
-      catch( error ) {
+      } catch (error) {
         this.isLoading = false;
         this.errorMessage = error.message;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="sass">
@@ -126,6 +138,5 @@ export default {
   border-left: 4px solid var(--color1)
   background-color: var(--textInvert)
   box-shadow: var(--shadow0)
-
 
 </style>

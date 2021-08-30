@@ -1,30 +1,42 @@
 <template>
-<ul class="menu">
-  <li class="menu-item">
-    <router-link :to="{name: 'Home'}">Home</router-link>
-  </li>
-  <li class="menu-item">
-    <router-link :to="{name: 'ItemArchive'}">Items</router-link>
-  </li>
-  <li class="menu-item">
-    <router-link :to="{name: 'ItemCreate'}">Create Item</router-link>
-  </li>
-  <li class="menu-item" v-if="!$store.state.isLoggedIn">
-    <router-link :to="{name: 'UserLogin'}">Login</router-link>
-  </li>
-  <li class="menu-item menu-item-has-children" v-if="$store.state.isLoggedIn">
-    <a href="#">My Account</a>
+  <ul class="menu">
+    <li class="menu-item">
+      <router-link :to="{name: 'Home'}">
+        Home
+      </router-link>
+    </li>
+    <li class="menu-item">
+      <router-link :to="{name: 'ItemArchive'}">
+        Items
+      </router-link>
+    </li>
+    <li class="menu-item">
+      <router-link :to="{name: 'ItemCreate'}">
+        Create Item
+      </router-link>
+    </li>
+    <li v-if="!$store.state.isLoggedIn" class="menu-item">
+      <router-link :to="{name: 'UserLogin'}">
+        Login
+      </router-link>
+    </li>
+    <li v-if="$store.state.isLoggedIn" class="menu-item menu-item-has-children">
+      <a href="#">My Account</a>
 
-    <ul class="sub-menu">
-      <li class="sub-menu-item">
-        <router-link :to="{name: 'UserProfile'}">Change Profile</router-link>
-      </li>
-      <li class="sub-menu-item">
-        <a @click.prevent="logout" href="#logout">Logout</a>
-      </li>
-    </ul>
-  </li>
-</ul>
+      <ul class="sub-menu">
+        <li class="sub-menu-item">
+          <router-link :to="{name: 'UserProfile'}">
+            Change Profile
+          </router-link>
+        </li>
+        <li class="sub-menu-item">
+          <a href="#logout" @click.prevent="logout">
+            Logout
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -32,14 +44,14 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 
 export default {
-  name: 'headerMenu',
+  name: 'HeaderMenu',
   methods: {
     logout() {
       firebase.auth().signOut();
       window.location.reload();
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="sass" scoped>
@@ -47,7 +59,7 @@ export default {
 
 .menu
   --navPadding: 1.5rem 0.75rem
-  
+
   display: flex
   flex-wrap: wrap
   margin-left: auto
@@ -96,10 +108,9 @@ export default {
     background-color: var(--color1)
 
     transition: var(--gTransition)
-  
+
     .footer &
       display: none
-
 
 .menu-item > a:hover
   .footer &
@@ -113,7 +124,6 @@ export default {
   &::before
     visibility: visible
     opacity: 1
-
 
 // active state
 .current-menu-item > a,
@@ -130,7 +140,6 @@ export default {
   &::before
     visibility: visible
     opacity: 1
-
 
 // Add down arrow if has children
 .menu-item-has-children > a
@@ -149,7 +158,6 @@ export default {
 
     .footer &
       display: none
-
 
 ///// CHILDREN MENU
 
@@ -194,7 +202,6 @@ export default {
     visibility: visible
     opacity: 1
 
-
 .sub-menu-item
   display: block
   color: var(--textInvert)
@@ -205,6 +212,6 @@ export default {
     background-color: var(--color1)
 
   a
-    display: block 
+    display: block
     padding: 0.375rem 0.75rem
 </style>

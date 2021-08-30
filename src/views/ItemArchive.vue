@@ -1,28 +1,36 @@
 <template>
-<main role="main">
-  <h3 class="alignwide">All Items</h3>
-  <Items :items="items" v-if="!isLoading" @deleted="onItemDeleted" />
-</main>
+  <main role="main">
+    <h3 class="alignwide">
+      All Items
+    </h3>
+    <Items
+      v-if="!isLoading"
+      :items="items"
+      @deleted="onItemDeleted"
+    />
+  </main>
 </template>
 
 <script>
-import Items from '../components/Items';
+import Items from '../components/Items.vue';
 
 export default {
-  name: 'itemArchive',
+  name: 'ItemArchive',
   components: {
-    Items
+    Items,
   },
-  data() { return {
-    items: [],
-    isLoading: true,
-  } },
-  
+  data() {
+    return {
+      items: [],
+      isLoading: true,
+    };
+  },
+
   /**
    * Get Latest items
    */
   async mounted() {
-    this.items = await this.$store.dispatch( 'getItems' );
+    this.items = await this.$store.dispatch('getItems');
     this.isLoading = false;
   },
 
@@ -30,13 +38,11 @@ export default {
     /**
      * Remove the item from the list after getting deleted
      */
-    async onItemDeleted( id ) {
-      this.items = await this.items.filter( p => {
-        return p.id !== id;
-      } );
-    }
-  }
-}
+    async onItemDeleted(id) {
+      this.items = await this.items.filter((p) => p.id !== id);
+    },
+  },
+};
 </script>
 
 <style lang="sass" scoped>

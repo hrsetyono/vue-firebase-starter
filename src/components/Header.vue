@@ -1,48 +1,46 @@
 <template>
-<header class="header" role="navigation">
-  <div class="header__bottom">
-    <router-link class="logo" :to="{name: 'Home'}">
-      <img :src="require('../images/logo.png')" alt="">
-    </router-link>
+  <header class="header" role="navigation">
+    <div class="header__bottom">
+      <router-link class="logo" :to="{name: 'Home'}">
+        <img :src="require('../images/logo.png')" alt="">
+      </router-link>
 
-    <HeaderMenu />
-  </div>
-</header>
+      <HeaderMenu />
+    </div>
+  </header>
 </template>
 
 <script>
-import HeaderMenu from './HeaderMenu';
+import HeaderMenu from './HeaderMenu.vue';
 
 export default {
-  name: 'headerDesktop',
+  name: 'HeaderDesktop',
   components: {
-    HeaderMenu
+    HeaderMenu,
   },
   data() {
     return {
       mobile: false,
-      windowWidth: 0
+      windowWidth: 0,
     };
   },
   created() {
-    window.addEventListener( 'resize', this.checkScreen );
+    window.addEventListener('resize', this.checkScreen);
     this.checkScreen();
   },
   methods: {
     checkScreen() {
       this.windowWidth = window.innerWidth;
 
-      if( this.windowWidth <= 750 ) {
+      if (this.windowWidth <= 750) {
         this.mobile = true;
       } else {
         this.mobile = false;
         this.isMobileNavOpen = false;
       }
     },
-
-    
   },
-}
+};
 </script>
 
 <style lang="sass" scoped>
@@ -64,10 +62,8 @@ export default {
   max-width: var(--siteWidth)
   margin: 0 auto
 
-
   @media ($below-nav)
     display: none
-
 
 .logo
   display: flex
@@ -92,7 +88,4 @@ export default {
   .footer &
     justify-content: flex-start
     width: 100%
-
-  
-
 </style>

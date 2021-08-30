@@ -1,13 +1,13 @@
 <template>
   <div class="loading">
-    <span></span>
+    <span />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'loading'
-}
+  name: 'Loading',
+};
 </script>
 
 <style lang="sass" scoped>
@@ -22,11 +22,11 @@ export default {
   display: flex
   justify-content: center
   align-items: center
-  
+
   @keyframes spin
     to
       transform: rotateZ(360deg)
-  
+
   span
     display: block
     width: 60px

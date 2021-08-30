@@ -8,34 +8,41 @@
 </template>
 
 <script>
-import Header from './components/Header';
-import HeaderMobile from './components/HeaderMobile';
-import Footer from './components/Footer';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import Header from './components/Header.vue';
+import HeaderMobile from './components/HeaderMobile.vue';
+import Footer from './components/Footer.vue';
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
     Header,
     HeaderMobile,
-    Footer
+    Footer,
   },
-  data() { return {
-    isMobile: false,
-    windowWidth: 0
-  } },
+  data() {
+    return {
+      isMobile: false,
+      windowWidth: 0,
+    };
+  },
+  watch: {
+    $route() {
+      this.checkRoute();
+    },
+  },
   created() {
-    firebase.auth().onAuthStateChanged( user => {
-      this.$store.commit( 'updateLoggedInUser', user );
+    firebase.auth().onAuthStateChanged((user) => {
+      this.$store.commit('updateLoggedInUser', user);
 
-      if( user ) {
-        this.$store.dispatch( 'getCurrentUser' );
+      if (user) {
+        this.$store.dispatch('getCurrentUser');
       }
     });
 
     // Check current window size
-    window.addEventListener( 'resize', this.checkScreen );
+    window.addEventListener('resize', this.checkScreen);
     this.checkScreen();
 
     // Check current route
@@ -48,31 +55,25 @@ export default {
     checkScreen() {
       this.windowWidth = window.innerWidth;
 
-      if( this.windowWidth <= 768 ) {
+      if (this.windowWidth <= 768) {
         this.isMobile = true;
       } else {
         this.isMobile = false;
       }
     },
-    
+
     /**
      * Check current route and do something with it
      */
     checkRoute() {
       // console.log( this.$route.name );
-    }
-  },
-  watch: {
-    $route() {
-      this.checkRoute();
-    }
+    },
   },
 };
 </script>
 
 <style lang="sass">
 // If you are using VS Code, install the "Sass" extension to properly highlight syntax
-
 @import "./sass/vars"
 @import "./sass/vars-root"
 @import "./sass/normalize"

@@ -1,74 +1,72 @@
 <template>
-<div class="user-form__wrapper">
-  <form class="user-form" @submit.prevent="updateProfile" v-if="$store.state.userEmail">
-    <h2>Account Settings</h2>
-    <label>
-      <span>First Name</span>
-      <input type="text" placeholder="Enter your First Name" v-model="firstName">
-    </label>
-    <label>
-      <span>Last Name</span>
-      <input type="text" placeholder="Enter your Last Name" v-model="lastName">
-    </label>
-    <label>
-      <span>Email</span>
-      <input type="email" placeholder="Enter your Email" v-model="email" disabled>
-      <small>This cannot be changed</small>
-    </label>
+  <div class="user-form__wrapper">
+    <form
+      v-if="$store.state.userEmail"
+      class="user-form"
+      @submit.prevent="updateProfile"
+    >
+      <h2>Account Settings</h2>
+      <label>
+        <span>First Name</span>
+        <input
+          v-model="firstName"
+          type="text"
+          placeholder="Enter your First Name"
+        >
+      </label>
+      <label>
+        <span>Last Name</span>
+        <input
+          v-model="lastName"
+          type="text"
+          placeholder="Enter your Last Name"
+        >
+      </label>
+      <label>
+        <span>Email</span>
+        <input
+          v-model="email"
+          type="email"
+          placeholder="Enter your Email"
+          disabled
+        >
+        <small>This cannot be changed</small>
+      </label>
 
-    <div class="user-form__submit">
-      <button type="submit">Update Profile</button>
-    </div>
-  </form>
+      <div class="user-form__submit">
+        <button type="submit">
+          Update Profile
+        </button>
+      </div>
+    </form>
 
-  <Modal v-if="isModalOpen" :message="modalMessage" v-on:closed="closeModal" />
-  <Loading v-if="isLoading" />
-</div>
+    <Modal
+      v-if="isModalOpen"
+      :message="modalMessage"
+      @closed="closeModal"
+    />
+    <Loading v-if="isLoading" />
+  </div>
 </template>
 
 <script>
-// import firebase from 'firebase/app';
-// import 'firebase/auth';
 import db from '../firebase';
-import Modal from '../components/Modal';
-import Loading from '../components/Loading';
+import Modal from '../components/Modal.vue';
+import Loading from '../components/Loading.vue';
 
 export default {
-  name: 'userProfile',
+  name: 'UserProfile',
   components: {
     Modal,
-    Loading
+    Loading,
   },
-  data() { return {
-    isLoading: false,
-    isModalOpen: false,
-    modalMessage: 'Changes were saved',
-  }},
-  methods: {
-    /**
-     * Change User data in Firebase and update the $state
-     */
-    async updateProfile() {
-      this.isLoading = true;
-
-      const database = await db.collection( 'users' ).doc( this.$store.state.userID );
-      let payload = {
-        firstName: this.firstName,
-        lastName: this.lastName,
-      };
-      await database.update( payload );
-
-      this.isLoading = false;
-      this.isModalOpen = true;
-    },
-    /**
-     * 
-     */
-    closeModal() {
-      this.isModalOpen = false;
-    },
+  data() {
+    return {
+      isLoading: false,
+      isModalOpen: false,
+      modalMessage: 'Changes were saved',
+    };
   },
-  
   computed: {
     email() {
       return this.$store.state.userEmail;
@@ -77,26 +75,51 @@ export default {
       get() {
         return this.$store.state.userFirstName;
       },
-      set( value ) {
-        this.$store.commit( 'updateProfile', {
+      set(value) {
+        this.$store.commit('updateProfile', {
+          value,
           key: 'userFirstName',
-          value: value
-        } );
-      }
+        });
+      },
     },
     lastName: {
       get() {
         return this.$store.state.userLastName;
       },
-      set( value ) {
-        this.$store.commit( 'updateProfile', {
+      set(value) {
+        this.$store.commit('updateProfile', {
+          value,
           key: 'userLastName',
-          value: value
-        } );
-      }
-    }
+        });
+      },
+    },
   },
-}
+  methods: {
+    /**
+     * Change User data in Firebase and update the $state
+     */
+    async updateProfile() {
+      this.isLoading = true;
+
+      const database = await db.collection('users').doc(this.$store.state.userID);
+      const payload = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+      };
+      await database.update(payload);
+
+      this.isLoading = false;
+      this.isModalOpen = true;
+    },
+
+    /**
+     * Close the modal
+     */
+    closeModal() {
+      this.isModalOpen = false;
+    },
+  },
+};
 </script>
 
 <style lang="sass" scoped>

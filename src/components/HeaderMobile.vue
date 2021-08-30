@@ -1,48 +1,52 @@
 <template>
-<header class="header header-mobile">
-  <div class="header__inner">
-    <router-link class="logo" :to="{name: 'Home'}">
-      <img :src="require('../images/logo.png')" alt="">
-    </router-link>
+  <header class="header header-mobile">
+    <div class="header__inner">
+      <router-link class="logo" :to="{name: 'Home'}">
+        <img :src="require('../images/logo.png')" alt="">
+      </router-link>
 
-    <a @click.prevent="toggle" href="#menu">Menu</a>
-  </div>
+      <a href="#menu" @click.prevent="toggle">Menu</a>
+    </div>
 
-  <transition name="offcanvas">
-    <aside class="offcanvas" v-show="isOpen">
-      <div class="offcanvas__inner">
-        <HeaderMenu />
+    <transition name="offcanvas">
+      <aside v-show="isOpen" class="offcanvas">
+        <div class="offcanvas__inner">
+          <HeaderMenu />
 
-        <a @click.prevent="toggle" href="#menu">
-          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="30" viewBox="0 0 320 512"><path d="M207.6 256l107.72-107.72c6.23-6.23 6.23-16.34 0-22.58l-25.03-25.03c-6.23-6.23-16.34-6.23-22.58 0L160 208.4 52.28 100.68c-6.23-6.23-16.34-6.23-22.58 0L4.68 125.7c-6.23 6.23-6.23 16.34 0 22.58L112.4 256 4.68 363.72c-6.23 6.23-6.23 16.34 0 22.58l25.03 25.03c6.23 6.23 16.34 6.23 22.58 0L160 303.6l107.72 107.72c6.23 6.23 16.34 6.23 22.58 0l25.03-25.03c6.23-6.23 6.23-16.34 0-22.58L207.6 256z"/></svg>
-          <span>Close</span>
-        </a>
-      </div>
-    </aside>
-  </transition>
-</header>
+          <a href="#menu" @click.prevent="toggle">
+            <CloseSVG />
+            <span>Close</span>
+          </a>
+        </div>
+      </aside>
+    </transition>
+  </header>
 </template>
 
 <script>
-import HeaderMenu from './HeaderMenu';
+import HeaderMenu from './HeaderMenu.vue';
+import CloseSVG from '../svg/close.svg';
 
 export default {
-  name: 'headerMobile',
+  name: 'HeaderMobile',
   components: {
-    HeaderMenu
+    HeaderMenu,
+    CloseSVG,
   },
-  data() { return {
-    isOpen: false,
-  } },
+  data() {
+    return {
+      isOpen: false,
+    };
+  },
   methods: {
     /**
      * Open the hidden menu
      */
     toggle() {
       this.isOpen = !this.isOpen;
-    }
+    },
   },
-}
+};
 </script>
 
 <style lang="sass" scoped>
@@ -69,7 +73,6 @@ export default {
     width: 320px
     max-width: 320px
 
-
 // before enter
 .offcanvas-enter
   visibility: hidden
@@ -94,7 +97,6 @@ export default {
 .offcanvas-leave-to
   transform: translateX(100%)
 
-
 .offcanvas__inner
   display: flex
   flex-direction: column
@@ -111,7 +113,6 @@ export default {
   @media ($below-s)
     padding-right: 1rem
     padding-left: 1rem
- 
 
 // Close button
 .offcanvas > a[href="#menu"]

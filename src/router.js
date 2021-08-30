@@ -1,55 +1,54 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 import firebase from 'firebase/app';
 
-import Home from "./views/Home.vue";
+import Home from './views/Home.vue';
 
-import UserLogin from "./views/UserLogin";
-import UserRegister from "./views/UserRegister";
-import UserForgotPassword from "./views/UserForgotPassword";
-import UserProfile from "./views/UserProfile";
+import UserLogin from './views/UserLogin.vue';
+import UserRegister from './views/UserRegister.vue';
+import UserForgotPassword from './views/UserForgotPassword.vue';
+import UserProfile from './views/UserProfile.vue';
 
-// Use Search-Replace to change "Item" to the data type you need
-import ItemArchive from "./views/ItemArchive.vue";
-import ItemSingle from "./views/ItemSingle";
-import ItemCreate from "./views/ItemCreate";
-import ItemEdit from "./views/ItemEdit";
-
+// Use Search-Replace to change 'Item' to the data type you need
+import ItemArchive from './views/ItemArchive.vue';
+import ItemSingle from './views/ItemSingle.vue';
+import ItemCreate from './views/ItemCreate.vue';
+import ItemEdit from './views/ItemEdit.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
+    path: '/',
+    name: 'Home',
     component: Home,
     meta: {
-      title: 'Home'
-    }
+      title: 'Home',
+    },
   },
   {
     path: '/login',
     name: 'UserLogin',
     component: UserLogin,
     meta: {
-      title: 'Login'
-    }
+      title: 'Login',
+    },
   },
   {
     path: '/register',
     name: 'UserRegister',
     component: UserRegister,
     meta: {
-      title: 'Register'
-    }
+      title: 'Register',
+    },
   },
   {
     path: '/forgot-password',
     name: 'UserForgotPassword',
     component: UserForgotPassword,
     meta: {
-      title: 'Forgot Password'
-    }
+      title: 'Forgot Password',
+    },
   },
   {
     path: '/profile',
@@ -57,24 +56,24 @@ const routes = [
     component: UserProfile,
     meta: {
       title: 'Profile',
-      authRequired: true
-    }
+      authRequired: true,
+    },
   },
   {
     path: '/items',
     name: 'ItemArchive',
     component: ItemArchive,
     meta: {
-      title: 'All Items'
-    }
+      title: 'All Items',
+    },
   },
   {
     path: '/items/:id',
     name: 'ItemSingle',
     component: ItemSingle,
     meta: {
-      title: 'Item'
-    }
+      title: 'Item',
+    },
   },
   {
     path: '/create-item',
@@ -83,17 +82,16 @@ const routes = [
     meta: {
       title: 'Create Item',
       authRequired: true,
-    }
+    },
   },
-  
   {
     path: '/edit-item/:id',
     name: 'ItemEdit',
     component: ItemEdit,
     meta: {
       title: 'Edit Item',
-      authRequired: true
-    }
+      authRequired: true,
+    },
   },
 ];
 
@@ -104,23 +102,23 @@ const router = new VueRouter({
 });
 
 // Set SEO metatag
-router.beforeEach( (to, from, next) => {
+router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title} | My App`;
   next();
-} );
+});
 
 // Check if Auth is required
-router.beforeEach( (to, from, next) => {
-  if( to.meta.authRequired ) {
-    if( !firebase.auth().currentUser ) {
+router.beforeEach((to, from, next) => {
+  if (to.meta.authRequired) {
+    if (!firebase.auth().currentUser) {
       next({
         name: 'UserLogin',
-        query: { redirectTo: to.name }
+        query: { redirectTo: to.name },
       });
     }
   }
 
   next();
-} );
+});
 
 export default router;
