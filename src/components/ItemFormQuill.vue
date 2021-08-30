@@ -13,7 +13,9 @@
 
   <label class="item-form__field">
     <span>Content</span>
-    <textarea ref="content" rows="8" v-model.trim="content"></textarea>
+    <vue-editor :editorOptions="editorSettings"
+      v-model.trim="content" useCustomImageHandler
+      @image-added="imageHandler" />
   </label>
   
   <div class="item-form__error" v-show="errorMessage">
@@ -33,9 +35,23 @@
 </template>
 
 <script>
+/* Add this in package.json:
+  
+  "quill": "^1.3.7",
+  "quill-image-resize-module": "^3.0.0",
+  "vue2-editor": "^2.10.2"
+
+Then add this in main.js:
+
+  import Vue2Editor from "vue2-editor";  
+  Vue.use(Vue2Editor);
+*/
+// import Quill from 'quill';
 import Loading from './Loading';
-import hMarkdownEditor from 'edje-markdown-editor';
-import 'edje-markdown-editor/dist/main.css';
+
+// window.Quill = Quill;
+// const ImageResize = require( 'quill-image-resize-module' ).default;
+// Quill.register( 'modules/imageResize', ImageResize );
 
 export default {
   name: 'itemForm',
@@ -56,13 +72,8 @@ export default {
       modules: { imageResize: {} }
     },
   }},
-
+  
   mounted() {
-    // Add toolbar to textarea
-    this.$nextTick( () => {
-      hMarkdownEditor( this.$refs.content, { buttons: ['bold', 'italic', 'link', '|', 'bullist', 'numlist', 'image', 'quote'] } );
-    });
-    
     // Pre-populate field if this is an Edit Form
     if( this.$props.item ) {
       this.title = this.$props.item.title;
@@ -147,6 +158,19 @@ export default {
       this.imageFile = e.currentTarget.files[0];
       this.imageName = this.imageFile.name;
       this.imageURL = URL.createObjectURL( this.imageFile ); // create Blob that can be used as 'src'
+    },
+
+    /**
+     * Listener for inserting Image into Editor
+     */
+    async imageHandler( file, Editor, cursorLocation, resetUploader ) {
+      let photoURL = await this.$store.dispatch( 'uploadImage', {
+        file: file,
+        name: file.name
+      } );
+
+      Editor.insertEmbed( cursorLocation, 'image', photoURL );
+      resetUploader();
     },
   }
 }

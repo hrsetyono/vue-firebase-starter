@@ -1,7 +1,7 @@
 <template>
 <div class="item-form__wrapper">
   <h1>Edit Item</h1>
-  <ItemForm :item="item" v-if="item" submit-text="Edit Item" @submit="onSubmit" @delete="onDelete" />
+  <ItemForm :item="item" v-if="item" submit-text="Edit Item" @submit="onSubmit" />
 </div>
 </template>
 
@@ -16,12 +16,14 @@ export default {
   data() { return {
     item: null,
   }},
+
   /**
    * Get the Item data to pre-populate the field
    */
   async mounted() {
     this.item = await this.$store.dispatch( 'getItem', this.$route.params.id );
   },
+  
   methods: {
     /**
      * After submitted

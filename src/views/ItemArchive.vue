@@ -1,7 +1,7 @@
 <template>
 <main role="main">
   <h3 class="alignwide">All Items</h3>
-  <Items :items="items" @deleted="onItemDeleted" />
+  <Items :items="items" v-if="!isLoading" @deleted="onItemDeleted" />
 </main>
 </template>
 
@@ -14,7 +14,8 @@ export default {
     Items
   },
   data() { return {
-    items: []
+    items: [],
+    isLoading: true,
   } },
   
   /**
@@ -22,6 +23,7 @@ export default {
    */
   async mounted() {
     this.items = await this.$store.dispatch( 'getItems' );
+    this.isLoading = false;
   },
 
   methods: {
