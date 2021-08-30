@@ -12,7 +12,9 @@
         </time>
       </header>
 
-      <main v-html="item.content" />
+      <main>
+        {{ item.content }}
+      </main>
     </div>
     <div v-else class="single-item__body">
       <main>
